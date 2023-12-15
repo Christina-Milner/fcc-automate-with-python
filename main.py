@@ -24,3 +24,23 @@ tables = camelot.read_pdf('foo.pdf', pages="1")
 
 tables.export('foo.csv', f='csv', compress=True)
 tables[0].to_csv('foo.csv')
+
+
+# Scraping
+# HTML Tags & Elements
+# XPath (compare this to BeautifulSoup later?)
+# This appears to be multiple videos stapled together into one and I am not sure they were meant to go together in this order
+# // div/text() gets the text from a div ok
+# //p[1] <- gets first p element, note 1-indexing
+# //div[@class="full-script"]
+# //p[(@class="plot") or (@class="plot2")]
+# //p[contains(@class, "plot")]
+
+# Special characters
+# / Selects children from node set on left side
+# // Matching node set is at any level in the document
+
+# .. parent node
+# * wildcard as usual
+# ./* all children nodes of the current context
+
