@@ -43,4 +43,13 @@ tables[0].to_csv('foo.csv')
 # .. parent node
 # * wildcard as usual
 # ./* all children nodes of the current context
+# @ select an attribute
+# () Grouping an expression
+# [n] Indicates that node of index n should be selected
+
+# Selenium
+
+# chromedriver.chromium.org, download ChromeDriver
+# pip install selenium
+# continues in news-headlines.py
 
