@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 
 import pandas as pd
 
@@ -9,8 +10,11 @@ import pandas as pd
 website = "https://www.nytimes.com/international/"
 path = "F:\Downloads\chromedriver-win64"
 
-options = webdriver.ChromeOptions()
-options.add_experimental_option("detach", True)
+#headless mode
+
+options = Options()
+options.add_argument("--headless=new")
+# options.add_experimental_option("detach", True)
 
 driver = webdriver.Chrome(options=options)
 driver.get(website)
@@ -62,8 +66,11 @@ for section in sections:
 my_dict = {'title': titles, 'subtitle': subtitles, 'link': links}
 
 df_headlines = pd.DataFrame(my_dict)
-df_headlines.to_csv('headline.csv')
+df_headlines.to_csv('headline-headless.csv')
 
 driver.quit()
 
 # Ok a lot of those xpaths aren't working, but I'm getting 15 headlines or so in a CSV, good enough for now!
+# Huh, for me it's numbered and in separate columns and for him it's not.
+
+# Headless mode: Syntax provided is deprecated, see https://stackoverflow.com/questions/75401348/selenium-chrome-driver-headless-mode-not-working
