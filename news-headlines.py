@@ -4,6 +4,35 @@ from selenium.webdriver.chrome.options import Options
 
 import pandas as pd
 
+# This stuff is to prepare for executable
+from datetime import datetime
+import os
+import sys
+
+# application_path = os.path.dirname(sys.executable)
+
+# Following block is yoinked off here as video instructions (above) no longer work
+# https://stackoverflow.com/questions/404744/determining-application-path-in-a-python-exe-generated-by-pyinstaller
+# This puts the file in G: rather than the subdirectory I want but ok, problem for another day
+
+if getattr(sys, 'frozen', False):
+    # If the application is run as a bundle, the PyInstaller bootloader
+    # extends the sys module by a flag frozen=True and sets the app 
+    # path into variable _MEIPASS'.
+    application_path = sys._MEIPASS
+else:
+    application_path = os.path.dirname(os.path.abspath(__file__))
+
+
+# "If we don't put datetime into the file name, we don't know what day it's from"
+# Well no we do because it shows you when the file was created, but the bigger problem is overwriting the previous one, no? 
+
+now = datetime.now()
+# check format at strftime.org
+day_month_year = now.strftime("%d%m%Y")
+
+
+
 # I am absolutely, positively, over-my-dead-body not scraping The Sun
 
 # website = "https://www.theguardian.com/food"
@@ -59,6 +88,7 @@ for section in sections:
         titles.append(title)
         subtitles.append(subtitle)
         links.append(link)
+        print("Try block actually ran")
     except:
         print("Issue with this section!")
         continue
@@ -66,11 +96,36 @@ for section in sections:
 my_dict = {'title': titles, 'subtitle': subtitles, 'link': links}
 
 df_headlines = pd.DataFrame(my_dict)
-df_headlines.to_csv('headline-headless.csv')
+
+file_name = f'/headline-{day_month_year}.csv'
+
+
+final_path = os.path.join(application_path, file_name)
+print(file_name, final_path)
+# To avoid issues with different OS using different slashes
+df_headlines.to_csv(final_path)
 
 driver.quit()
 
 # Ok a lot of those xpaths aren't working, but I'm getting 15 headlines or so in a CSV, good enough for now!
-# Huh, for me it's numbered and in separate columns and for him it's not.
+# Huh, for me it's numbered and in separate columns and for him it's not. (Edit: This is because I'm opening it in Excel durrr)
 
 # Headless mode: Syntax provided is deprecated, see https://stackoverflow.com/questions/75401348/selenium-chrome-driver-headless-mode-not-working
+
+# Automate this to run once per day, like when you turn on the PC
+# Convert .py file to executable
+# Some steps to prepare first (modules and file path changes above)
+# Install pyinstaller
+# pyinstaller --onefile <file name>
+# (Going to put that stuff on gitignore but this generates a build and dist folder)
+
+# Schedule with crontab
+# Not a thing on Windows but I'll note it down anyway
+# crontab -e
+# go to crontab.guru to make expression, be very careful that you don't set stuff up to run once per minute or something
+# Type into window, drop in executable to get path
+# Press Esc, colon, wq, press enter, give permission
+# crontab -l to verify
+
+# Create pivot tables with Python
+
