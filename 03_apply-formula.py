@@ -22,3 +22,5 @@ for i in range(min_column+1, max_column+1):
 
 
 wb.save('report.xlsx')
+
+# Add title and subtitle & change font => format.py
